@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Chat Demo";
+    Layout = "~/Areas/ChatModule/Views/Shared/Front.cshtml";
+}
+
+<h2>SignalR Chat</h2>
+<div id="signalr-chat">
+    <script src="~/Scripts/jquery.signalR-1.1.2.min.js" type="text/javascript"></script>
+    <script src="@Url.Content("~/signalr/hubs")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            // Proxy created on the fly
+            var chat = $.connection.chat;
+
+            // Declare a function on the chat hub so the server can invoke it
+            chat.client.addMessage = function (name, message) {
+                $('#messages').append('<li><strong>' + name + '</strong>: ' + message + '</li>');
+                $('#msg').val("");
+                $('#msg').focus();
+            };
+
+            $("#msg").on('keydown', function (event) {
+                // Manually bind the enter key to submit the message
+                if (event.keyCode == 13) {
+                    $("#broadcast").click();
+                    return false;
+                }
+            });
+
+            // Get the user name and store it to prepend to messages.
+            $('#displayname').val(prompt('Enter your name:', ''));
+            // Set initial focus to message input box.  
+            $('#msg').focus();
+
+            // Start the connection
+            $.connection.hub.start().done(function () {
+                chat.server.send($('#displayname').val(), "Has entered the chat ...");
+                $("#broadcast").click(function () {
+                    // Call the chat method on the server
+                    chat.server.send($('#displayname').val(), $('#msg').val());
+                });
+            });
+
+            // Detect when the connection is stopped
+            $(window).bind("beforeunload", function () {
+                chat.server.send($('#displayname').val(), "Has left the chat ...");
+            });
+        });
+    </script>
+    <input id="msg" name="msg" type="text" />
+    <input id="broadcast" name="broadcast" type="button" value="Send" />
+    <input id="displayname" name="displayname" type="hidden" />
+    <ul id="messages"></ul>
+</div>
