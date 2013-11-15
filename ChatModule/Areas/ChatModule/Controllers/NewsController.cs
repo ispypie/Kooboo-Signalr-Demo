@@ -14,7 +14,7 @@ using System.Web.Mvc;
 using Kooboo.CMS.Sites.Extension.ModuleArea;
 using ChatModule.Models;
 
-namespace ChatModule.Controllers
+namespace ChatModule.Areas.ChatModule.Controllers
 {
 	public class NewsController : Controller
 	{
@@ -44,6 +44,15 @@ namespace ChatModule.Controllers
 		public ActionResult About()
 		{
 			return View("about");
+		}
+		public ActionResult LastestNews()
+		{
+			List<News> news = new List<News>();
+			for (int i = 0; i < 5; i++)
+			{
+				news.Add(new News() { Id = i, Title = string.Format("lastest news {0}", i), Body = "news body" });
+			}
+			return View(news);
 		}
 		#endregion
 

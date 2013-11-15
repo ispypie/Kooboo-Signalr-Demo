@@ -16,7 +16,8 @@ using Kooboo.CMS.Content.Models;
 using Kooboo.CMS.Content.Query;
 using Kooboo.CMS.Sites.View;
 using Kooboo.CMS.Sites.DataRule;
-namespace ChatModule.Controllers
+using Kooboo.CMS.Search;
+namespace ChatModule.Areas.ChatModule.Controllers
 {
 	public class ArticleController : ModuleControllerBase
 	{
@@ -38,7 +39,7 @@ namespace ChatModule.Controllers
 
 			//var userKey = Page_Context.Current.PageRequestContext.AllQueryString["UserKey"];
 
-			if (!string.IsNullOrEmpty(userKey))
+			if (!string.IsNullOrEmpty(userKey) && userKey != "--")
 			{
 				articleQuery = articleQuery.WhereCategory(categoryFolder.CreateQuery().WhereEquals("UserKey", userKey));
 			}
@@ -56,6 +57,22 @@ namespace ChatModule.Controllers
 			DataRulePagedList pagedList = new DataRulePagedList(pageData,
 				pageIndex.Value, pageSize.Value, articleQuery.Count());
 			return View(pagedList);
+		}
+
+
+		public ActionResult Search(string key, int? pageIndex, int? pageSize)
+		{
+			if (!pageIndex.HasValue)
+			{
+				pageIndex = 1;
+			}
+			if (!pageSize.HasValue)
+			{
+				pageSize = 10;
+			}
+			var results = Repository.Current.Search(key, pageIndex.Value, pageSize.Value);
+
+			return View(results);
 		}
 	}
 }

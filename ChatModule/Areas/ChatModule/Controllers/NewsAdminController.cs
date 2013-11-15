@@ -15,7 +15,7 @@ using Kooboo.CMS.Sites.Extension.ModuleArea;
 using Kooboo.Web.Mvc;
 using Kooboo.CMS.Common;
 
-namespace ChatModule.Controllers
+namespace ChatModule.Areas.ChatModule.Controllers
 {
 	public class NewsAdminController : AdminControllerBase
 	{

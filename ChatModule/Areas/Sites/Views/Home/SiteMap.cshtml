@@ -17,6 +17,8 @@
             @("Unpublished page".Localize())</li>
         <li><span class="show-in-menu">A</span>
             @("Show in menu".Localize())</li>
+        <li><span class="abpage">ab</span>
+            @("A/B Test".Localize())</li>
     </ul>
 
 </div>
@@ -42,7 +44,7 @@
                             foreach (var l in layouts)
                             {
                             <li>
-                                @Html.ActionLink(l.Name, "Create", "Page", ViewContext.RequestContext.AllRouteValues().Merge("FullName", "").Merge("Layout", l.Name).Merge("return", ViewContext.HttpContext.Request.RawUrl), new RouteValueDictionary())
+                                @Html.ActionLink(l.Name, "Create", "Page", ViewContext.RequestContext.AllRouteValues().Merge("FullName", "").Merge("Layout", l.Name).Merge("IsDefault", true).Merge("return", ViewContext.HttpContext.Request.RawUrl), new RouteValueDictionary())
                             </li>
                             }
                         }

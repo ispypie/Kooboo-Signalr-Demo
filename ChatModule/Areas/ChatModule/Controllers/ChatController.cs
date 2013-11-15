@@ -2,14 +2,14 @@
 
 namespace ChatModule.Areas.ChatModule.Controllers
 {
-    public class ChatController : Controller
-    {
-        //
-        // GET: /ChatModule/Chat/
-        public ActionResult Index()
-        {
-            return View();
-        }
+	public class ChatController : Controller
+	{
+		//
+		// GET: /ChatModule/Chat/
+		public ActionResult Index()
+		{
+			return View();
+		}
 
-    }
+	}
 }

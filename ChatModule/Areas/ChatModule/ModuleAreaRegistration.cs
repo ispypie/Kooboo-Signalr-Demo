@@ -12,9 +12,9 @@ using System.IO;
 using Kooboo;
 using Kooboo.Web.Mvc;
 
-namespace ChatModule
+namespace ChatModule.Areas.ChatModule
 {
-	public class SampleAreaRegistration : AreaRegistration
+	public class ModuleAreaRegistration : AreaRegistration
 	{
 		public const string ModuleName = "ChatModule";
 		public override string AreaName
@@ -35,7 +35,7 @@ namespace ChatModule
 				, new[] { "ChatModule.Controllers", "ChatModule.Areas.ChatModule.Controllers", "Kooboo.Web.Mvc", "Kooboo.Web.Mvc.WebResourceLoader" }
 			);
 
-			var menuFile = AreaHelpers.CombineAreaFilePhysicalPath(AreaName, "Menu.config");
+			var menuFile = AreaHelpers.CombineAreaFilePhysicalPath(AreaName, "CMSMenu.config");
 			if (File.Exists(menuFile))
 			{
 				Kooboo.Web.Mvc.Menu.MenuFactory.RegisterAreaMenu(AreaName, menuFile);

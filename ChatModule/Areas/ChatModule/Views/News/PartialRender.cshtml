@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Areas/" + ChatModule.SampleAreaRegistration.ModuleName + "/Views/Shared/Front.cshtml";
+    Layout = "~/Areas/" + ChatModule.Areas.ChatModule.ModuleAreaRegistration.ModuleName + "/Views/Shared/Front.cshtml";
 }
 @this.Ajax.ModuleAjax().ActionLink("AjaxView", "AjaxView", "Home", new AjaxOptions() { UpdateTargetId = "ajaxViewDiv", LoadingElementId = "loading" }, new { @class = "button" })
 <div class="block">

@@ -17,7 +17,8 @@ using ChatModule.Models;
 using Kooboo.Globalization;
 using Kooboo.CMS.Sites;
 using Kooboo.CMS.Common;
-namespace ChatModule.Controllers
+using Kooboo.Web.Url;
+namespace ChatModule.Areas.ChatModule.Controllers
 {
 	public class AdminController : AdminControllerBase
 	{
@@ -36,7 +37,8 @@ namespace ChatModule.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					ModuleInfo.SaveModuleSetting(ModuleName, siteName, moduleInfo.Settings);
+					this.ControllerContext.SaveModuleSettings(moduleInfo.Settings);
+
 					resultEntry.AddMessage("Module setting has been changed.".Localize());
 				}
 
@@ -56,26 +58,34 @@ namespace ChatModule.Controllers
 		public ActionResult GenerateModuleInfo()
 		{
 			ModuleInfo moduleInfo = new ModuleInfo();
-			moduleInfo.ModuleName = "ChatModule";
-			moduleInfo.Version = "4.0.0.0";
-			moduleInfo.KoobooCMSVersion = "4.0.0.0";
+			moduleInfo.ModuleName = ModuleAreaRegistration.ModuleName;
+			moduleInfo.Version = "4.2.1.0";
+			moduleInfo.KoobooCMSVersion = "4.2.1.0";
+			moduleInfo.InstallingTemplate = UrlUtility.Combine("Views", "Shared", "_OnInstalling.cshtml");
+			moduleInfo.UninstallingTemplate = UrlUtility.Combine("Views", "Shared", "_OnUninstalling.cshtml");
 			moduleInfo.DefaultSettings = new ModuleSettings()
 			{
 				ThemeName = "Default",
 				Entry = new Entry()
 				{
-					Controller = "Chat",
-					Action = "Index"
+					Controller = "News",
+					Action = "Index",
+					Name = "NewsList"
 				}
 			};
 			moduleInfo.EntryOptions = new EntryOption[]{
-                new EntryOption(){ Name="Chat",Entry = new Entry{ Controller="Chat",Action ="Index"}},
+                new EntryOption(){ Name="NewsList",Entry = new Entry{Name="NewsList", Controller="News",Action ="Index"}},
+                new EntryOption(){ Name="NewsCategories",Entry = new Entry{ Name="NewsList",Controller="News",Action ="Categories"}},
+                new EntryOption(){Name="ArticleCategories",Entry=new Entry{Name="NewsList",Controller="Article",Action="Categories"}},
+                new EntryOption(){Name="ArticleList",Entry=new Entry{Name="NewsList",Controller="Article",Action="List"}},
+                new EntryOption(){Name="ArticleSearch",Entry=new Entry{Name="NewsList",Controller="Article",Action="Search"}},
+                new EntryOption(){Name="LastestNews",Entry=new Entry{Name="NewsList",Controller="News",Action="LastestNews",LinkToEntryName="NewsList"}}
             };
 			moduleInfo.DefaultSettings.CustomSettings = new Dictionary<string, string>();
 			moduleInfo.DefaultSettings.CustomSettings["Setting1"] = "Value1";
 			ModuleInfo.Save(moduleInfo);
 
-			return View();
+			return Content("The module configuration file has been generated.");
 		}
 	}
 }

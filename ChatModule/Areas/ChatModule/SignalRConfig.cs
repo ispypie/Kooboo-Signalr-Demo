@@ -8,14 +8,12 @@ using System.Web.Routing;
 
 namespace Kooboo.CMS.Web
 {
-	[Dependency(typeof(Kooboo.CMS.Common.IHttpApplicationEvents), Key = "SignalRConfig")]
+	[Dependency(typeof(Kooboo.CMS.Common.IHttpApplicationEvents), Key = "SignalRConfig", Order = -1)]
 	public class SignalRConfig : Kooboo.CMS.Common.HttpApplicationEvents
 	{
 		public override void Application_Start(object sender, EventArgs e)
 		{
 			RouteTable.Routes.MapHubs();
-
-			base.Application_Start(sender, e);
 		}
 	}
 }
